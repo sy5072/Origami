@@ -24,6 +24,11 @@ class SoundManager: ObservableObject {
         case GMajor
         case AMajor
         case BMajor
+        case red
+        case blue
+        case yellow
+        case orange
+        case pink
     }
     
     func playSound(sounds: soundOption) {

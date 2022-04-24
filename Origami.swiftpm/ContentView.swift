@@ -13,14 +13,13 @@ struct ContentView: View {
             Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
     @State var articles: [String] = []
     @State var chords: [SoundManager.soundOption] = []
-    @State var soundReady: Bool? = false
-    
+    @State var beats: [SoundManager.soundOption] = []
     
     var body: some View {
         HStack {
             VStack {
                 Button(action: {
-                        self.setColors(color: bgColor)
+                    self.setColors(color: bgColor)
                     self.makeArticle(count: articles.count, name: "rectangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .CMajor)
 
                         print(articles)
@@ -116,7 +115,7 @@ struct ContentView: View {
                 
                 
                 Button(action: {
-                    self.playMusic(chords:chords)
+                    self.playMusic(chords:chords, beats:beats)
 //                    SoundManager.instance.playSound(sounds: .CMajor)
 //                    SoundManager.instance.playSound(sounds: .DMajor)
                 }){
@@ -184,24 +183,46 @@ struct ContentView: View {
     
     func setColors(color: Color) {
         let color: Color = color
-        
+        if (color == .red) {
+            beats.append(.red)
+        } else if (color == .blue) {
+            beats.append(.blue)
+        } else if (color == .yellow) {
+            beats.append(.yellow)
+        } else if (color == .orange) {
+            beats.append(.orange)
+        } else if (color == .pink) {
+            beats.append(.pink)
+        }
+
         bgColors.append(color)
+        print(beats)
     }
     
-    func playMusic(chords: [SoundManager.soundOption]) {
+    func playMusic(chords: [SoundManager.soundOption], beats: [SoundManager.soundOption]) {
         let chords: [SoundManager.soundOption] = chords
+        let beats: [SoundManager.soundOption] = beats
         
             for number in 0..<chords.count {
-            print("delayed message")
+            setVolume(currentScales[number], fadeDuration: 1)
             SoundManager.instance.playSound(sounds: chords[number])
-                sleep(1)
-            
+            sleep(1)
             }
+        
+            for number in 0..<beats.count {
+            setVolume(currentScales[number], fadeDuration: 1)
+            SoundManager.instance.playSound(sounds: beats[number])
+            sleep(1)
+            }
+        
             
         print(chords)
         
     }
     
+    func setVolume(_: CGFloat, fadeDuration: TimeInterval) {
+        
+    }
     
     
 }
