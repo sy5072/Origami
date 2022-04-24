@@ -6,27 +6,71 @@ struct ContentView: View {
     @State private var rectPosition3 = CGPoint(x: 90, y: 50)
     @State private var rectPosition4 = CGPoint(x: 90, y: 50)
     
-//    @GestureState var scale = 1.0
     @State var currentScale: CGFloat = 1.0
-    @State var finalScale: CGFloat = 1.0
+    @State var angle = Angle(degrees: 0.0)
+    @State var isDragging = false
+    @State var offset = CGSize.zero
+    @State private var location: CGPoint = CGPoint(x: 50, y: 50)
+    @GestureState private var fingerLocation: CGPoint? = nil
+    @GestureState private var startLocation: CGPoint? = nil
+    @GestureState private var startScale: CGFloat? = nil
+    
 
-//    var magnification: some Gesture {
-//        MagnificationGesture()
-//            .updating($scale) {currentState, gestureState, transaction in gestureState = currentState
-//            }
-//    }
     
     var magnification: some Gesture {
         MagnificationGesture()
             .onChanged { value in
-                currentScale = value
+                var newScale = currentScale
+                self.currentScale = value
             }
-//            .onEnded { value in
-//                finalScale = value
-//
+//            .updating($startScale) { (value, startScale, transaction) in
+//                startScale = startScale ?? currentScale // 2
 //            }
     }
     
+    var rotation: some Gesture {
+        RotationGesture()
+            .onChanged { angle in
+                self.angle = angle
+            }
+    }
+    
+//    var drag: some Gesture {
+//        DragGesture()
+//            .onChanged { _ in self.isDragging = true}
+//            .onEnded { _ in self.isDragging = false}
+//    }
+//
+//    var drag: some Gesture {
+//        DragGesture()
+//            .onChanged { value in
+////                offset = value.translation
+//                rectPosition = value.translation
+//            }
+//            .onEnded { _ in
+////                 offset = .zero
+//            }
+//    }
+    
+    var simpleDrag: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                var newLocation = startLocation ?? location // 3
+                newLocation.x += value.translation.width/currentScale
+                newLocation.y += value.translation.height/currentScale
+                self.location = newLocation
+            }
+            .updating($startLocation) { (value, startLocation, transaction) in
+                startLocation = startLocation ?? location // 2
+            }
+    }
+
+    var fingerDrag: some Gesture {
+        DragGesture()
+            .updating($fingerLocation) { (value, fingerLocation, transaction) in
+                fingerLocation = value.location
+            }
+    }
     
     var body: some View {
         HStack {
@@ -36,39 +80,43 @@ struct ContentView: View {
                 Text("Rectangle")
             }
             
-            VStack {
+            ZStack {
                 Image("rectangle2")
                     .resizable()
+                    .rotationEffect(angle)
+                    .position(location)
+//                    .gesture(DragGesture().onChanged({ value in
+//                        self.rectPosition = value.location
+//                    }))
+                    .gesture(rotation)
+//                    .offset(x: offset.width, y: offset.height)
+//                    .simultaneousGesture(DragGesture().onChanged({ value in
+//                        self.rectPosition = value.location
+//                    }))
+//                    .background(.green)
                     .scaleEffect(currentScale)
+                    .simultaneousGesture(magnification)
+                    .simultaneousGesture(
+                            simpleDrag
+//                                .simultaneously(with: fingerDrag)
+                    )
+                    
+//                    .gesture(DragGesture().onChanged({ value in
+//                        self.rectPosition = value.location
+//                    }))
+                    
+//                    .gesture(drag)
+//                    .simultaneousGesture(rotation)
                     .colorMultiply(.red)
                     .frame(width: 150, height: 150)
-                    .position(rectPosition)
-                    .gesture(DragGesture().onChanged({ value in
-                        self.rectPosition = value.location
-                    }))
-                    .gesture(magnification)
+                    
+                    
                 
-                RoundedRectangle(cornerRadius: 4.0)
-                    .fill(Color.red)
-                    .frame(width: 100, height: 100)
-                    .position(rectPosition2)
-                    .gesture(DragGesture().onChanged({ value in
-                        self.rectPosition2 = value.location
-                    }))
-                RoundedRectangle(cornerRadius: 4.0)
-                    .fill(Color.blue)
-                    .frame(width: 80, height: 80)
-                    .position(rectPosition3)
-                    .gesture(DragGesture().onChanged({ value in
-                        self.rectPosition3 = value.location
-                    }))
-                Circle()
-                    .fill(Color.blue)
-                    .frame(width: 100, height: 100)
-                    .position(rectPosition4)
-                    .gesture(DragGesture().onChanged({ value in
-                        self.rectPosition4 = value.location
-                    }))
+                    
+//                    .gesture(magnification)
+                    
+                
+            
                
             }
         }
