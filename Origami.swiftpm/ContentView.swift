@@ -1,13 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
-//    @State private var rectPosition = CGPoint(x: 50, y: 50)
-//    @State private var rectPosition2 = CGPoint(x: 70, y: 50)
-//    @State private var rectPosition3 = CGPoint(x: 90, y: 50)
-//    @State private var rectPosition4 = CGPoint(x: 90, y: 50)
     
     @State var currentScales: [CGFloat] = []
-//    @State var angle = Angle(degrees: 0.0)
     @State var angles: [Angle] = []
     @State var locations: [CGPoint] = []
     @GestureState private var startLocation: CGPoint? = nil
@@ -19,37 +14,10 @@ struct ContentView: View {
     
     @State var articles: [String] = []
     
-//    var magnification: some Gesture {
-//        MagnificationGesture()
-//            .onChanged { value in
-//                self.currentScale = value
-//            }
-//    }
-    
-//    var rotation: some Gesture {
-//        RotationGesture()
-//            .onChanged { angle in
-//                self.angle = angle
-//            }
-//    }
-    
-//    var drag: some Gesture {
-//        DragGesture()
-//            .onChanged { value in
-//                var newLocation = startLocation ?? location // 3
-//                newLocation.x += value.translation.width/currentScale
-//                newLocation.y += value.translation.height/currentScale
-//                self.location = newLocation
-//            }
-//            .updating($startLocation) { (value, startLocation, transaction) in
-//                startLocation = startLocation ?? location // 2
-//            }
-//    }
-    
     var body: some View {
         HStack {
             VStack {
-                    Button(action: {
+                Button(action: {
                         self.setColors(color: bgColor)
                         self.makeArticle(count: articles.count, name: "rectangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
 
@@ -57,34 +25,91 @@ struct ContentView: View {
                         print(locations)
                     }) {
                         Text("Rectangle")
+                        Image("rectangle")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .colorMultiply(.red)
                     }
-                    Button(action: {
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width*1/6, height: 40)
+                .background(.white)
+                .cornerRadius(15)
+
+                
+                
+                Button(action: {
                         self.setColors(color: bgColor)
                         self.makeArticle(count: articles.count, name: "triangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
 
                         print(articles)
                     }) {
                         Text("Triangle")
+                        Image("triangle")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .colorMultiply(.orange)
                     }
-                    Button(action: {
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width*1/6, height: 40)
+                .background(.white)
+                .cornerRadius(15)
+
+                
+                Button(action: {
                         self.setColors(color: bgColor)
                         self.makeArticle(count: articles.count, name: "circle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
                         print(articles)
                     }) {
                         Text("Circle")
+                        Image("circle")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .colorMultiply(.blue)
                     }
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width*1/6, height: 40)
+                .background(.white)
+                .cornerRadius(15)
+
                     
-                    Button(action: {
+                Button(action: {
                         self.setColors(color: bgColor)
                         self.makeArticle(count: articles.count, name: "star", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
                         print(articles)
+                    
                     }) {
                         Text("Star")
+                        Image("star")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .colorMultiply(.yellow)
                     }
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width*1/6, height: 40)
+                .background(.white)
+                .cornerRadius(15)
+   
+                Button(action: {
+                        self.setColors(color: bgColor)
+                        self.makeArticle(count: articles.count, name: "heart", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                        print(articles)
+                    
+                    }) {
+                        Text("Heart")
+                        Image("heart")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
+                            .colorMultiply(.pink)
+                    }
+                .padding()
+                .frame(width: UIScreen.main.bounds.size.width*1/6, height: 40)
+                .background(.white)
+                .cornerRadius(15)
                 
-                    ColorPicker("Color", selection: $bgColor)
-                    .foregroundColor(.white)
-                    .frame(width: 100)
+                
+                ColorPicker("Color", selection: $bgColor)
+                .foregroundColor(.white)
+                .frame(width: 100)
                 
             }
             .frame(width: UIScreen.main.bounds.size.width*1/4, height: UIScreen.main.bounds.size.height)
@@ -118,11 +143,7 @@ struct ContentView: View {
                             })
                         .colorMultiply(bgColors[i])
                         .frame(width: 150, height: 150)
-                        
-                    
-//                    self.i += 1
-//                    .listRowBackground(Color.clear)
-//                    .listRowSeparator(.hidden)
+                        .zIndex(-1)
                     
                 }
             }
@@ -135,14 +156,11 @@ struct ContentView: View {
         let location: CGPoint = location
         let rotate: Angle = rotate
         let scale: CGFloat = scale
-//        let count: Int = count
-        
-//        let article = Article(id: count, name: name, location: location, rotate: rotate, scale: scale)
+
         articles.append(name)
         currentScales.append(scale)
         angles.append(rotate)
         locations.append(location)
-//        articles.append(article)
     }
     
     func setColors(color: Color) {
