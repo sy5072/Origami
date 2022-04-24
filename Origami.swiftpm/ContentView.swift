@@ -146,7 +146,6 @@ struct ContentView: View {
                 
                 
                 Button(action: {
-//                    print("play")
                     SoundManager.instance.playSound(sounds: .CMajor)
                 }){
                     Image(systemName: "play.fill")
