@@ -27,12 +27,23 @@ class SoundManager: ObservableObject {
         case red
         case blue
         case yellow
-        case orange
-        case pink
+        case purple
+        case green
     }
     
     func playSound(sounds: soundOption) {
         guard let url = Bundle.main.url(forResource: sounds.rawValue, withExtension: ".mp3") else { return }
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch let error {
+            print("재생하는데 오류가 생겼습니다. 오류코드 \(error.localizedDescription)")
+        }
+    }
+    
+    func playBeat(beats: String) {
+        guard let url = Bundle.main.url(forResource: beats, withExtension: ".mp3") else { return }
         
         do {
             player = try AVAudioPlayer(contentsOf: url)

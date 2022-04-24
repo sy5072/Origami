@@ -8,16 +8,15 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Origami",
+    name: "listenyourart",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "Origami",
+            name: "listenyourart",
             targets: ["AppModule"],
-            bundleIdentifier: "developer.NICK.Origami",
-            teamIdentifier: "U5D4UR6AFR",
+            bundleIdentifier: "developer.NICK.listenyourart",
             displayVersion: "1.0",
             bundleVersion: "1",
             iconAssetName: "AppIcon",
@@ -31,9 +30,6 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
-            ],
-            capabilities: [
-                .fileAccess(.musicFolder, mode: .readWrite)
             ]
         )
     ],
