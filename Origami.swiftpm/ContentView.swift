@@ -1,4 +1,37 @@
 import SwiftUI
+import AVKit
+
+
+class SoundManager: ObservableObject {
+    
+    static let instance = SoundManager()
+    
+    var player: AVAudioPlayer?
+    
+    enum soundOption: String {
+        case CMajor
+        case DMajor
+        case EMajor
+        case FMajor
+        case GMajor
+        case AMajor
+        case BMajor
+        case Duckquack
+    }
+    
+    func playSound(sounds: soundOption) {
+        guard let url = Bundle.main.url(forResource: sounds.rawValue, withExtension: ".m4a") else { return }
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch let error {
+            print("재생하는데 오류가 생겼습니다. 오류코드 \(error.localizedDescription)")
+        }
+    }
+    
+}
+
 
 struct ContentView: View {
     
@@ -10,9 +43,8 @@ struct ContentView: View {
     @State var bgColors: [Color] = []
     @State private var bgColor =
             Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
-
-    
     @State var articles: [String] = []
+    
     
     var body: some View {
         HStack {
@@ -110,10 +142,24 @@ struct ContentView: View {
                 ColorPicker("Color", selection: $bgColor)
                 .foregroundColor(.white)
                 .frame(width: 100)
+                .padding()
+                
+                
+                Button(action: {
+//                    print("play")
+                    SoundManager.instance.playSound(sounds: .CMajor)
+                }){
+                    Image(systemName: "play.fill")
+                }
+                .foregroundColor(.white)
+                .imageScale(.large)
+                .padding(100)
+//                .frame(width: 100, height: 50)
                 
             }
             .frame(width: UIScreen.main.bounds.size.width*1/4, height: UIScreen.main.bounds.size.height)
             .background(.green)
+            
             ZStack {
                 
                 ForEach(articles.indices, id: \.self) { i in
@@ -168,5 +214,7 @@ struct ContentView: View {
         
         bgColors.append(color)
     }
+    
+    
     
 }
