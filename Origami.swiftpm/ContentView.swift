@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var bgColor =
             Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
     @State var articles: [String] = []
+    @State var chords: [SoundManager.soundOption] = []
+    @State var soundReady: Bool? = false
     
     
     var body: some View {
@@ -19,7 +21,7 @@ struct ContentView: View {
             VStack {
                 Button(action: {
                         self.setColors(color: bgColor)
-                        self.makeArticle(count: articles.count, name: "rectangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                    self.makeArticle(count: articles.count, name: "rectangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .CMajor)
 
                         print(articles)
                         print(locations)
@@ -39,7 +41,7 @@ struct ContentView: View {
                 
                 Button(action: {
                         self.setColors(color: bgColor)
-                        self.makeArticle(count: articles.count, name: "triangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                        self.makeArticle(count: articles.count, name: "triangle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .DMajor)
 
                         print(articles)
                     }) {
@@ -57,7 +59,7 @@ struct ContentView: View {
                 
                 Button(action: {
                         self.setColors(color: bgColor)
-                        self.makeArticle(count: articles.count, name: "circle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                        self.makeArticle(count: articles.count, name: "circle", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .FMajor)
                         print(articles)
                     }) {
                         Text("Circle")
@@ -74,7 +76,7 @@ struct ContentView: View {
                     
                 Button(action: {
                         self.setColors(color: bgColor)
-                        self.makeArticle(count: articles.count, name: "star", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                        self.makeArticle(count: articles.count, name: "star", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .GMajor)
                         print(articles)
                     
                     }) {
@@ -91,7 +93,7 @@ struct ContentView: View {
    
                 Button(action: {
                         self.setColors(color: bgColor)
-                        self.makeArticle(count: articles.count, name: "heart", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0)
+                        self.makeArticle(count: articles.count, name: "heart", location: CGPoint(x: 0, y: 0) , rotate: Angle(degrees: 0.0), scale: 1.0, chord: .EMajor)
                         print(articles)
                     
                     }) {
@@ -114,7 +116,9 @@ struct ContentView: View {
                 
                 
                 Button(action: {
-                    SoundManager.instance.playSound(sounds: .CMajor)
+                    self.playMusic(chords:chords)
+//                    SoundManager.instance.playSound(sounds: .CMajor)
+//                    SoundManager.instance.playSound(sounds: .DMajor)
                 }){
                     Image(systemName: "play.fill")
                 }
@@ -164,22 +168,38 @@ struct ContentView: View {
         }
     }
     
-    func makeArticle(count: Int, name:String, location: CGPoint, rotate: Angle, scale: CGFloat) {
+    func makeArticle(count: Int, name:String, location: CGPoint, rotate: Angle, scale: CGFloat, chord: SoundManager.soundOption) {
         let name: String = name
         let location: CGPoint = location
         let rotate: Angle = rotate
         let scale: CGFloat = scale
+        let chord: SoundManager.soundOption = chord
 
         articles.append(name)
         currentScales.append(scale)
         angles.append(rotate)
         locations.append(location)
+        chords.append(chord)
     }
     
     func setColors(color: Color) {
         let color: Color = color
         
         bgColors.append(color)
+    }
+    
+    func playMusic(chords: [SoundManager.soundOption]) {
+        let chords: [SoundManager.soundOption] = chords
+        
+            for number in 0..<chords.count {
+            print("delayed message")
+            SoundManager.instance.playSound(sounds: chords[number])
+                sleep(1)
+            
+            }
+            
+        print(chords)
+        
     }
     
     

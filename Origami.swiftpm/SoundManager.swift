@@ -24,11 +24,10 @@ class SoundManager: ObservableObject {
         case GMajor
         case AMajor
         case BMajor
-        case Duckquack
     }
     
     func playSound(sounds: soundOption) {
-        guard let url = Bundle.main.url(forResource: sounds.rawValue, withExtension: ".m4a") else { return }
+        guard let url = Bundle.main.url(forResource: sounds.rawValue, withExtension: ".mp3") else { return }
         
         do {
             player = try AVAudioPlayer(contentsOf: url)
@@ -37,5 +36,6 @@ class SoundManager: ObservableObject {
             print("재생하는데 오류가 생겼습니다. 오류코드 \(error.localizedDescription)")
         }
     }
+    
     
 }
