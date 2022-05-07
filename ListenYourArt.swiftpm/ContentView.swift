@@ -20,9 +20,7 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             ZStack {
-                
                 ForEach(articles.indices, id: \.self) { i in
-                    
                     Image(articles[i])
                         .resizable()
                         .rotationEffect(angles[i])
@@ -47,9 +45,7 @@ struct ContentView: View {
                                 startLocation = startLocation ?? locations[i] // 2
                             })
                         .colorMultiply(bgColors[i])
-                        .frame(width: 150, height: 150)
-                        
-                    
+                        .frame(width: 150, height: 150)   
                 }
             }
             .frame(width: UIScreen.main.bounds.size.width*3/4, height: UIScreen.main.bounds.size.height)
